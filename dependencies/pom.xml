@@ -108,6 +108,7 @@
         <!-- # for database -->
         <!-- db -->
         <mysql.version>5.1.42</mysql.version>
+        <xugu.version>12.3.5</xugu.version>
         <ojdbc.version>19.3.0.0</ojdbc.version>
         <dm.version>8.1.2.192</dm.version>
         <postgresql.version>42.3.8</postgresql.version>
@@ -115,7 +116,7 @@
         <mariadb.version>2.7.2</mariadb.version>
         <kingbase.version>9.0.0</kingbase.version>
         <!-- db connection pool -->
-        <druid.version>1.2.20</druid.version>
+        <druid.version>1.2.24</druid.version>
         <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
         <hikari.version>3.4.3</hikari.version>
         <caffeine.version>2.9.3</caffeine.version>
@@ -276,6 +277,11 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.xugudb</groupId>
+                <artifactId>xugu-jdbc</artifactId>
+                <version>${xugu.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.postgresql</groupId>

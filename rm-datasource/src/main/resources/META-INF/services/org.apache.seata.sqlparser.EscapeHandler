@@ -24,3 +24,4 @@ org.apache.seata.rm.datasource.sql.handler.polardbx.PolarDBXEscapeHandler
 org.apache.seata.rm.datasource.sql.handler.dm.DmEscapeHandler
 org.apache.seata.rm.datasource.sql.handler.oscar.OscarEscapeHandler
 org.apache.seata.rm.datasource.sql.handler.kingbase.KingbaseEscapeHandler
+org.apache.seata.rm.datasource.sql.handler.xugu.XuguEscapeHandler

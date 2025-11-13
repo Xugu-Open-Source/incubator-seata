@@ -109,7 +109,7 @@ public class VGroupMappingDataBaseDAO {
     }
 
     public List<MappingDO> queryMappingDO() {
-        String sql = "SELECT vgroup,namespace, cluster FROM " + vMapping + " WHERE cluster = ?";
+        String sql = "SELECT vgroup,namespace, `cluster` FROM " + vMapping + " WHERE `cluster` = ?";
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;

@@ -115,6 +115,7 @@ public class PageUtil {
             case "oceanbase":
             case "dm":
             case "oscar":
+            case "xugu":
                 return LIMIT_TEMPLATE
                         .replace(SOURCE_SQL_PLACE_HOLD, sourceSql)
                         .replace(LIMIT_PLACE_HOLD, String.valueOf(pageSize))
@@ -149,6 +150,7 @@ public class PageUtil {
             case "oracle":
             case "dm":
             case "oscar":
+            case "xugu":
                 return sourceSql.replaceAll("(?i)(?<=select)(.*)(?=from)", " count(1) ");
             case "postgresql":
             case "kingbase":

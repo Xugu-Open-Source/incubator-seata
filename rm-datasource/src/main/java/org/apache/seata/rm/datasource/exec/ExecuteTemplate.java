@@ -31,6 +31,8 @@ import org.apache.seata.rm.datasource.exec.polardbx.PolarDBXUpdateJoinExecutor;
 import org.apache.seata.rm.datasource.exec.sqlserver.SqlServerDeleteExecutor;
 import org.apache.seata.rm.datasource.exec.sqlserver.SqlServerSelectForUpdateExecutor;
 import org.apache.seata.rm.datasource.exec.sqlserver.SqlServerUpdateExecutor;
+import org.apache.seata.rm.datasource.exec.xugu.XuguSelectForUpdateExecutor;
+import org.apache.seata.rm.datasource.exec.xugu.XuguUpdateJoinExecutor;
 import org.apache.seata.rm.datasource.sql.SQLVisitorFactory;
 import org.apache.seata.sqlparser.SQLRecognizer;
 import org.apache.seata.sqlparser.SQLType;
@@ -122,6 +124,9 @@ public class ExecuteTemplate {
                         if (JdbcConstants.SQLSERVER.equalsIgnoreCase(dbType)) {
                             executor = new SqlServerSelectForUpdateExecutor<>(
                                     statementProxy, statementCallback, sqlRecognizer);
+                        } else if (JdbcConstants.XUGU.equals(dbType)) {
+                            executor = new XuguSelectForUpdateExecutor<>(
+                                    statementProxy, statementCallback, sqlRecognizer);
                         } else {
                             executor = new SelectForUpdateExecutor<>(statementProxy, statementCallback, sqlRecognizer);
                         }
@@ -149,6 +154,10 @@ public class ExecuteTemplate {
                             case JdbcConstants.MYSQL:
                                 executor =
                                         new MySQLUpdateJoinExecutor<>(statementProxy, statementCallback, sqlRecognizer);
+                                break;
+                            case JdbcConstants.XUGU:
+                                executor =
+                                        new XuguUpdateJoinExecutor<>(statementProxy, statementCallback, sqlRecognizer);
                                 break;
                             case JdbcConstants.MARIADB:
                                 executor = new MariadbUpdateJoinExecutor<>(
