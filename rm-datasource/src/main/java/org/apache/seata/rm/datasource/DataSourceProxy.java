@@ -235,6 +235,8 @@ public class DataSourceProxy extends AbstractDataSourceProxy implements Resource
             initOracleResourceId();
         } else if (JdbcConstants.MYSQL.equals(dbType) || JdbcConstants.POLARDBX.equals(dbType)) {
             initMysqlResourceId();
+        } else if (JdbcConstants.XUGU.equals(dbType)) {
+            initXuguResourceId();
         } else if (JdbcConstants.SQLSERVER.equals(dbType)) {
             initSqlServerResourceId();
         } else if (JdbcConstants.DM.equals(dbType)) {
@@ -274,6 +276,21 @@ public class DataSourceProxy extends AbstractDataSourceProxy implements Resource
      */
     private void initMysqlResourceId() {
         String startsWith = "jdbc:mysql:loadbalance://";
+        if (jdbcUrl.startsWith(startsWith)) {
+            String url;
+            if (jdbcUrl.contains("?")) {
+                url = jdbcUrl.substring(0, jdbcUrl.indexOf('?'));
+            } else {
+                url = jdbcUrl;
+            }
+            resourceId = url.replace(",", "|");
+        } else {
+            initDefaultResourceId();
+        }
+    }
+
+    private void initXuguResourceId() {
+        String startsWith = "jdbc:xugu:loadbalance://";
         if (jdbcUrl.startsWith(startsWith)) {
             String url;
             if (jdbcUrl.contains("?")) {
