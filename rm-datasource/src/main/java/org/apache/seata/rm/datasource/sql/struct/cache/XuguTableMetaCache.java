@@ -85,7 +85,7 @@ public class XuguTableMetaCache extends AbstractTableMetaCache {
     @Override
     protected TableMeta fetchSchema(Connection connection, String tableName) throws SQLException {
         try {
-            return resultSetMetaToSchema(connection.getMetaData(), tableName);
+            return resultSetMetaToSchema(connection, tableName);
         } catch (SQLException sqlEx) {
             throw sqlEx;
         } catch (Exception e) {
@@ -93,23 +93,27 @@ public class XuguTableMetaCache extends AbstractTableMetaCache {
         }
     }
 
-    protected TableMeta resultSetMetaToSchema(DatabaseMetaData dbmd, String tableName) throws SQLException {
+    protected TableMeta resultSetMetaToSchema(Connection connection, String tableName) throws SQLException {
+        DatabaseMetaData dbmd = connection.getMetaData();
         TableMeta tm = new TableMeta();
-        //  Save the original table name information for active cache refresh
-        //  to avoid refresh failure caused by missing catalog information
-        tm.setOriginalTableName(tableName);
+        tm.setTableName(tableName);
+        // select * from SYSDBA.table 带模式名
         String[] schemaTable = tableName.split("\\.");
-        String schemaName = schemaTable.length > 1 ? schemaTable[0] : dbmd.getUserName();
+        String schemaName = schemaTable.length > 1 ? schemaTable[0] : null;
         tableName = schemaTable.length > 1 ? schemaTable[1] : tableName;
-        if (schemaName.contains("\"")) {
-            schemaName = schemaName.replace("\"", "");
+        // 区别大小写 select * from "Test"."Select"
+        if (schemaName != null) {
+            if (schemaName.startsWith("\"") && schemaName.endsWith("\"")) {
+                schemaName = schemaName.replaceAll("(^\")|(\"$)", "");
+            } else {
+                schemaName = schemaName.toLowerCase();
+            }
         } else {
-            schemaName = schemaName.toUpperCase();
+            schemaName = connection.getSchema();
         }
 
-        if (tableName.contains("\"")) {
-            tableName = tableName.replace("\"", "");
-
+        if (tableName.startsWith("\"") && tableName.endsWith("\"")) {
+            tableName = tableName.replaceAll("(^\")|(\"$)", "");
         } else {
             tableName = tableName.toUpperCase();
         }
