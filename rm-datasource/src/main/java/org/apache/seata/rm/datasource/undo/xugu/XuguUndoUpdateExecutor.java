@@ -24,7 +24,6 @@ import org.apache.seata.rm.datasource.sql.struct.Row;
 import org.apache.seata.rm.datasource.sql.struct.TableRecords;
 import org.apache.seata.rm.datasource.undo.AbstractUndoExecutor;
 import org.apache.seata.rm.datasource.undo.SQLUndoLog;
-import org.apache.seata.rm.datasource.undo.mysql.MySQLJsonHelper;
 import org.apache.seata.sqlparser.util.ColumnUtils;
 import org.apache.seata.sqlparser.util.JdbcConstants;
 
@@ -62,7 +61,7 @@ public class XuguUndoUpdateExecutor extends AbstractUndoExecutor {
         String updateColumns = nonPkFields.stream()
                 .map(field -> {
                     String addEscape = ColumnUtils.addEscape(field.getName(), JdbcConstants.XUGU);
-                    return addEscape + " = " + MySQLJsonHelper.convertIfJson(field, beforeImage.getTableMeta());
+                    return addEscape + " = " + XuguJsonHelper.convertIfJson(field, beforeImage.getTableMeta());
                 })
                 .collect(Collectors.joining(", "));
 
