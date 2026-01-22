@@ -105,6 +105,8 @@ public class XuguTableMetaCache extends AbstractTableMetaCache {
         if (schemaName != null) {
             if (schemaName.startsWith("\"") && schemaName.endsWith("\"")) {
                 schemaName = schemaName.replaceAll("(^\")|(\"$)", "");
+            } else if (schemaName.startsWith("`") && schemaName.endsWith("`")) {
+                schemaName = schemaName.replaceAll("(^`)|(`$)", "");
             } else {
                 schemaName = schemaName.toLowerCase();
             }
@@ -114,7 +116,9 @@ public class XuguTableMetaCache extends AbstractTableMetaCache {
 
         if (tableName.startsWith("\"") && tableName.endsWith("\"")) {
             tableName = tableName.replaceAll("(^\")|(\"$)", "");
-        } else {
+        } else if (tableName.startsWith("`") && tableName.endsWith("`")) {
+            tableName = tableName.replaceAll("(^`)|(`$)", "");
+        }  else {
             tableName = tableName.toUpperCase();
         }
         //   https://github.com/apache/incubator-seata/issues/6612
@@ -161,8 +165,10 @@ public class XuguTableMetaCache extends AbstractTableMetaCache {
                     continue;
                 }
                 String colName = rsIndex.getString("COLUMN_NAME");
-                if (colName.contains("\"")) {
-                    colName = colName.replace("\"", "");
+                if (colName.startsWith("\"") && colName.endsWith("\"")) {
+                    colName = colName.replaceAll("(^\")|(\"$)", "");
+                } else if (colName.startsWith("`") && colName.endsWith("`")) {
+                    colName = colName.replaceAll("(^`)|(`$)", "");
                 }
                 ColumnMeta col = tm.getAllColumns().get(colName);
                 if (tm.getAllIndexes().containsKey(indexName)) {
